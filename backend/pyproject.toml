@@ -1,0 +1,21 @@
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "safelens-backend"
+version = "0.1.0"
+description = "Backend for SafeLens content moderation."
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+fastapi = "^0.103.1"
+uvicorn = {extras = ["standard"], version = "^0.23.2"}
+pydantic = "^2.4.2"
+transformers = "^4.34.0"
+torch = "^2.0.1"
+pytest = "^7.4.2"
+httpx = "^0.25.0"
+
+[tool.poetry.dev-dependencies]
