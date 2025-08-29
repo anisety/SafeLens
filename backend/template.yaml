@@ -1,0 +1,34 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  safelens-backend
+
+  SAM template for deploying the SafeLens backend as a serverless application.
+
+Globals:
+  Function:
+    Timeout: 30
+    MemorySize: 512
+
+Resources:
+  SafeLensFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      PackageType: Image
+      Architectures:
+        - x86_64
+      Events:
+        Moderate:
+          Type: Api
+          Properties:
+            Path: /moderate
+            Method: post
+    Metadata:
+      DockerTag: python3.9-v1
+      DockerContext: ./aws
+      Dockerfile: Dockerfile
+
+Outputs:
+  SafeLensApi:
+    Description: "API Gateway endpoint URL for Prod stage for SafeLens function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/moderate/"

@@ -13,6 +13,7 @@ This repository contains the source code for SafeLens, a platform for real-time 
 -   **React Frontend**: A sleek, responsive dashboard built with Vite, React, and TailwindCSS.
 -   **Docker Support**: Containerize the backend for easy deployment.
 -   **CI/CD Pipeline**: A GitHub Actions workflow to automatically run tests.
+-   **Serverless Deployment**: AWS SAM template for easy deployment to AWS Lambda.
 
 ---
 
@@ -21,8 +22,8 @@ This repository contains the source code for SafeLens, a platform for real-time 
 -   **Backend**: Python, FastAPI, PyTorch, Transformers, Uvicorn
 -   **Frontend**: React, Vite, TypeScript, TailwindCSS
 -   **Testing**: PyTest
+-   **Deployment**: Docker, AWS SAM, AWS Lambda
 -   **CI/CD**: GitHub Actions
--   **Containerization**: Docker
 
 ---
 
@@ -31,25 +32,26 @@ This repository contains the source code for SafeLens, a platform for real-time 
 ```
 SafeLens/
 ├── backend/
-│   ├── app/
-│   │   ├── main.py         # FastAPI application
-│   │   ├── models.py       # Pydantic models
-│   │   └── services.py     # NLP moderation logic
+│   ├── app/              # FastAPI application
+│   ├── aws/              # AWS Lambda and SAM deployment
+│   │   ├── lambda_function.py
+│   │   └── Dockerfile
 │   ├── tests/
-│   │   └── test_api.py     # API tests
-│   ├── Dockerfile          # Docker configuration
-│   └── requirements.txt    # Python dependencies
+│   ├── Dockerfile        # Docker configuration for local dev
+│   ├── requirements.txt
+│   ├── samconfig.toml    # SAM configuration
+│   └── template.yaml     # SAM template
 │
 ├── frontend/
 │   ├── src/
-│   │   ├── App.tsx         # Main React component
-│   │   └── components/     # Reusable UI components
-│   ├── package.json        # Node.js dependencies
-│   └── tailwind.config.js  # TailwindCSS configuration
+│   │   ├── App.tsx
+│   │   └── components/
+│   ├── package.json
+│   └── tailwind.config.js
 │
 ├── .github/
 │   └── workflows/
-│       └── ci.yml          # CI/CD workflow
+│       └── ci.yml
 │
 └── README.md
 ```
@@ -136,3 +138,31 @@ You can also run the backend inside a Docker container.
     ```
 
 The API will be accessible on `http://localhost:8000` just like before.
+
+---
+## 🚀 Deploying to AWS with SAM
+
+You can deploy the backend as a serverless application on AWS using the AWS Serverless Application Model (SAM).
+
+### Prerequisites for AWS Deployment
+
+-   AWS CLI, configured with your credentials.
+-   AWS SAM CLI.
+-   Docker.
+
+### Deployment Steps
+
+1.  Navigate to the `backend` directory.
+2.  Build the SAM application. This command builds the Docker image for the Lambda function.
+
+    ```bash
+    sam build
+    ```
+
+3.  Deploy the application to your AWS account. You will be guided through a series of prompts.
+
+    ```bash
+    sam deploy --guided
+    ```
+
+Once deployed, SAM will output the API Gateway endpoint URL. You can use this URL to interact with your live serverless backend. You can then update the `fetch` URL in the frontend `App.tsx` to point to your new AWS endpoint.
